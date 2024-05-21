@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mycompany.codebrew.dao.PaymentsDao">
+
+	<select id="selectCartList" parameterType="String"
+		resultType="CartProductDetailProduct">
+		SELECT c.caid AS caId,
+		pd.pdid AS pdId,
+		pd.pdshotcount AS
+		pdShotCount,
+		pd.pdcount AS pdCount,
+		p.prid AS prId,
+		p.prname AS prName,
+		p.prprice AS prPrice,
+		p.primage AS prImgData,
+		p.prinfo AS prInfo,
+		b.bopname AS bopName,
+		s.sopname AS sopName,
+		t.topname AS topName
+		FROM
+		cart c
+		JOIN productDetail pd ON c.pdid = pd.pdid
+		JOIN product p ON
+		pd.prid = p.prid
+		JOIN beansOption b ON pd.bopid = b.bopid
+		JOIN
+		tempOption t ON pd.topid = t.topid
+		JOIN sizeOption s ON pd.sopid =
+		s.sopid
+		WHERE c.acid = #{acId}
+		ORDER BY caId ASC
+	</select>
+
+	<insert id="insertPayment" parameterType="Payment">
+		<selectKey keyProperty="paId" order="BEFORE"
+			resultType="int">
+			select paId_seq.nextval from dual
+		</selectKey>
+		INSERT INTO PAYMENT(paId, paDate, acId, paName, paTel, brId,
+		paRequest, paPay)
+		VALUES (#{paId}, SYSDATE, #{acId}, #{paName},
+		#{paTel}, #{brId}, #{paRequest}, #{paPay})
+	</insert>
+
+	<insert id="insertPaymentDetail" parameterType="int">
+		<selectKey keyProperty="padId" order="BEFORE"
+			resultType="int">
+			select padId_seq.nextval from dual
+		</selectKey>
+		INSERT INTO PAYMENTDETAIL(padId, paId, pdId)
+		VALUES (#{padId}, #{paId},
+		#{pdId})
+	</insert>
+
+	<delete id="deleteCartList" parameterType="String">
+		DELETE FROM cart
+		WHERE
+		acid = #{acId}
+	</delete>
+
+	<resultMap id="paymentMap" type="Payment">
+		<id property="paId" column="paId" />
+		<result property="paId" column="paId"/>
+	    <result property="paName" column="paName"/>
+	    <result property="paTel" column="paTel"/>
+	    <result property="paDate" column="paDate"/>
+	    <result property="paRequest" column="paRequest"/>
+	    <result property="paPay" column="paPay"/>
+	    <result property="brName" column="brName"/>
+		<!-- PaymentDetail 컬렉션에 대한 매핑 -->
+		<collection property="paymentDetail" ofType="com.mycompany.codebrew.dto.PaymentDetail">
+			<result column="prName" property="prName" />
+			<result column="prPrice" property="prPrice" />
+			<result column="sopName" property="sopName" />
+			<result column="bopName" property="bopName" />
+			<result column="topName" property="topName" />
+			<result column="pdShotCount" property="pdShotCount" />
+			<result column="pdCount" property="pdCount" />
+		</collection>
+	</resultMap>
+
+	<select id="selectPayments" resultMap="paymentMap">
+		SELECT 
+		pay.paId as paId, 
+		pay.paName as paName, 
+		pay.paTel as paTel,
+		pay.paDate as paDate,
+		pay.paRequest as paRequest,
+		pay.paPay as paPay,
+		br.brName as brName,
+		p.prName as prName,
+		p.prPrice as prPrice,
+		sop.sopName as sopName,
+		bop.bopName as bopName, top.topName as topName, pd.pdShotCount as
+		pdShotCount, pd.pdCount as pdCount
+		FROM payment pay
+		INNER JOIN
+		paymentDetail pad ON pay.paId = pad.paId
+		INNER JOIN productDetail pd ON
+		pad.pdId = pd.pdId
+		INNER JOIN branch br ON pay.brid = br.brid
+		INNER JOIN
+		product p ON pd.prId = p.prId
+		INNER JOIN beansOption bop ON pd.bopId =
+		bop.bopId
+		INNER JOIN sizeOption sop ON pd.sopId = sop.sopId
+		INNER JOIN
+		tempOption top ON pd.topId = top.topId
+		ORDER BY
+		pay.paid ASC
+	</select>
+	
+	<select id="selectPaymentsByAcId" parameterType="String" resultMap="paymentMap">
+		SELECT 
+		pay.paId as paId, 
+		pay.paName as paName, 
+		pay.paTel as paTel,
+		pay.paDate as paDate,
+		pay.paRequest as paRequest,
+		pay.paPay as paPay,
+		br.brName as brName,
+		p.prName as prName,
+		p.prPrice as prPrice,
+		sop.sopName as sopName,
+		bop.bopName as bopName, top.topName as topName, pd.pdShotCount as
+		pdShotCount, pd.pdCount as pdCount
+		FROM payment pay
+		INNER JOIN
+		paymentDetail pad ON pay.paId = pad.paId
+		INNER JOIN productDetail pd ON
+		pad.pdId = pd.pdId
+		INNER JOIN branch br ON pay.brid = br.brid
+		INNER JOIN
+		product p ON pd.prId = p.prId
+		INNER JOIN beansOption bop ON pd.bopId =
+		bop.bopId
+		INNER JOIN sizeOption sop ON pd.sopId = sop.sopId
+		INNER JOIN
+		tempOption top ON pd.topId = top.topId
+		WHERE pay.acId = #{acId}
+		ORDER BY pay.paid ASC
+	</select>
+</mapper>

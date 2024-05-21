@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+ <configuration>
+ 	<settings>
+ 		<setting name="jdbcTypeForNull" value="NULL"/>
+ 		<setting name="mapUnderscoreToCamelCase" value="true"/>
+ 	</settings>
+ 	<typeAliases>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Account" alias="Account"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Board" alias="Board"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.BoardCategory" alias="BoardCategory"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.BoardComment" alias="BoardComment"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.BoardImg" alias="BoardImg"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Cart" alias="Cart"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Payment" alias="Payment"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Product" alias="Product"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.ProductCategory" alias="ProductCategory"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.ProductDetail" alias="ProductDetail"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Pager" alias="Pager"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Menu" alias="Menu"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.CartProductDetailProduct" alias="CartProductDetailProduct"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.BoLike" alias="BoLike"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.BocLike" alias="BocLike"/>
+ 		<typeAlias type="com.mycompany.codebrew.dto.Payment" alias="Payment"/>
+ 	</typeAliases>
+ </configuration>
